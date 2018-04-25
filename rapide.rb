@@ -12,14 +12,14 @@ class Agent
     starting_cash = conf["agent"]["startingCash"]
 
     # Now load in the appropriate files/classes for genome
-    conf["agent"]["buyGenes"].each do |filename|
-      buy_genes << get_new_class_object_from_filename(filename) #does init work???
+    conf["agent"]["buyGenes"].each do |classname|
+      buy_genes << Object.const_get(classname).new #does init work???
     end
     conf["agent"]["sellGenes"].each do |filename|
-      sell_genes << get_new_class_object_from_filename(filename)
+      sell_genes << Object.const_get(classname).new
     end
     conf["agent"]["holdGenes"].each do |filename|
-      hold_genes << get_new_class_object_from_filename(filename)
+      hold_genes << Object.const_get(classname).new
     end
   # init end
   end
@@ -55,4 +55,4 @@ population = Array.new
 (0..config["ga"]["populationSize"]).each do |_|
   population << Agent.new(config)
 end
-puts
+puts population
