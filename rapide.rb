@@ -1,7 +1,6 @@
 # Remember: Quick and Dirty this time...
 require 'json'
 
-
 class Agent
   def initialize(conf)
     # make our genome arrays
@@ -27,6 +26,22 @@ class Agent
 # class end
 end
 
+class SmaPercentAbove
+end
+class PercentChangePos
+end
+class TimeSinceLastBuy
+end
+class TimeSinceLastSell
+end
+class HaveSettledCash
+end
+class OwnStock
+end
+class BuySellSignalsClose
+end
+
+
 ####################### Script runs below here ################
 # load configuration
 if ARGV[0] != nil && ARGV[0].start_with?("{")
@@ -34,3 +49,10 @@ if ARGV[0] != nil && ARGV[0].start_with?("{")
 else
   puts "Missing configuration argument. Need JSON string!"
 end
+
+# create the population
+population = Array.new
+(0..config["ga"]["populationSize"]).each do |_|
+  population << Agent.new(config)
+end
+puts
