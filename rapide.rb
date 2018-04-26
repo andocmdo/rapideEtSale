@@ -1,4 +1,4 @@
-# Remember: Quick and Dirty this time...
+##### Remember: Quick and Dirty this time...
 require 'json'
 
 class Agent
@@ -28,7 +28,7 @@ class Agent
   def genes_to_string
     result = "buy genes:"
     @buy_genes.each do |gene|
-      result = "#{result} #{gene.class.name}"
+      result = "#{result} #{gene.class.name}: #{gene.to_string}"
     end
     result = "#{result}\nsell genes:"
     @sell_genes.each do |gene|
@@ -42,19 +42,47 @@ class Agent
   end
 end # class end
 
+###### Gene Classes ########
 class SmaPercentAbove
+  def initialize
+    @percent = rand         # limit for activation. are we above the x% SMA(interval)?
+    @interval = rand(200)   # interval to calculate the SMA, (such as SMA(200) is 200 day moving average)
+    @weight = rand          # weight to assign this gene
+  end
+  def to_string
+    "percent=#{@percent.round(3)} interval=#{@interval} weight=#{@weight.round(3)} "
+  end
 end
+
 class PercentChangePos
+  def to_string
+    "blah "
+  end
 end
 class TimeSinceLastBuy
+  def to_string
+    "blah "
+  end
 end
 class TimeSinceLastSell
+  def to_string
+    "blah "
+  end
 end
 class HaveSettledCash
+  def to_string
+    "blah "
+  end
 end
 class OwnStock
+  def to_string
+    "blah "
+  end
 end
 class BuySellSignalsClose
+  def to_string
+    "blah "
+  end
 end
 
 
@@ -72,6 +100,7 @@ population = Array.new
   population << Agent.new(config)
 end
 
+# DEBUG remove later
 population.each do |agent|
   puts agent.genes_to_string
 end
