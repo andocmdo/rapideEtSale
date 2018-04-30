@@ -1,10 +1,10 @@
 ##### Remember: Quick and Dirty this time...
 require 'json'
 
-
+# General Classes
 class Agent
   attr_accessor :buy_genes, :sell_genes, :hold_genes, :starting_cash
-
+  attr_reader :fitness
   def initialize(conf)
     # make our genome arrays
     @buy_genes = Array.new
@@ -26,6 +26,11 @@ class Agent
     end
   end # init end
 
+  def calc_fitness
+    #TODO fix this
+    return rand.round(3)
+  end
+
   def genes_to_string
     result = "buy genes:"
     @buy_genes.each do |gene|
@@ -41,6 +46,49 @@ class Agent
     end
     return result
   end
+end # class end
+
+
+class High_Scores_and_Stats
+  attr_accessor :num_high_scores
+  attr_reader :high_score_agents, :min_high_score
+  # TODO add hashes for storing each generations max/min/avg/stdev/etc
+  def initialize(num_high_scores=10)
+    @num_high_scores = num_high_scores  # number of top scoring agents to keep
+    @high_score_agents = Array.new      # sorted array of top scoring agents
+    @min_high_score = 0.0               # the minimum score in high_score_agents
+  end
+
+  def feed(scores, population)
+    scores.each do |index, score|
+      # TODO add avg/max/min/stdev for all scores for each generation
+      # for each agent at index with some score, check if it is high enough
+      # to enter into the high score agents list.
+      if score > @min_high_score
+        add_high_score_agent(population[index])
+      end
+    end
+  end
+
+  def add_high_score_agent(agent)
+    if @high_score_agents.empty?  # if this is the first entry, nothing to compare to
+      @high_score_agents << agent
+    else
+      @high_score_agents.each_with_index do |high_score_agent, index|
+        if agent.fitness > high_score_agent.fitness
+          @high_score_agents.insert(index, agent)
+          # TODO someday we should check that an equal scoring, but genetically
+          # different (although same exact action log) agent can be added without
+          # being discarded because the score was the same as another "first-come"
+          # Agent already on the high scores list...
+          
+          # now remove the @num_high_scores + 1 item to keep us in limits
+          if @high_score_agents.size > @num_high_scores
+            @high_score_agents.pop
+          end
+      end
+    end # if/else end
+  end # add_high_score_agent end
 end # class end
 
 
@@ -128,14 +176,20 @@ xover_pool_size_ratio = config["ga"]["xoverPoolSizeRatio"]
 max_generations = config["ga"]["maxGenerations"]
 
 # initialize the High Scores and Stats recordkeeper
-
+stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
 
 # run the steps for the Genetic Algorithm
 (0...max_generations).each do |generation|
   # run agents through sim and calculate fitness
-  population.each do |agent|
-    agent.calculate_fitness()
+  # keep a hash of index in population and score
+  scores = Hash.new
+  population.each_with_index do |agent, index|
+    scores[index] = agent.calc_fitness
   end
+  # feed that hash info to the stats tracker, who will then pull back out
+  # the agents that have top scores
+  stats.feed(scores, population)
+
 
   # xover
 
