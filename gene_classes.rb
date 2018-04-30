@@ -1,26 +1,28 @@
 ###### Gene Classes ########
 class SmaPercentAbove
+  attr_accessor :codons
   def initialize
     # these class variables are the individual codons/parts of the gene itself
-    @percent = rand       # limit for activation. are we above the x% SMA(interval)?
-    @interval = rand(200) # interval to calculate the SMA, (such as SMA(200) is 200 day moving average)
-    @weight = rand        # weight to assign this gene
+    @codons = Hash.new
+    @codons["percent"] = rand       # limit for activation. are we above the x% SMA(interval)?
+    @codons["interval"] = rand(200) # interval to calculate the SMA, (such as SMA(200) is 200 day moving average)
+    @codons["weight"] = rand        # weight to assign this gene
   end
 
   def mutate(rate)        # We mutate each gene component individually
     if rand < rate
-      @percent = rand
+      @codons["percent"] = rand
     end
     if rand < rate
-      @interval = rand(200)
+      @codons["interval"] = rand(200)
     end
     if rand < rate
-      @weight = rand
+      @codons["weight"] = rand
     end
   end
 
   def to_string
-    "percent=#{@percent.round(3)} interval=#{@interval} weight=#{@weight.round(3)} "
+    "percent=#{@codons["percent"].round(3)} interval=#{@codons["interval"]} weight=#{@codons["weight"].round(3)} "
   end
 end
 

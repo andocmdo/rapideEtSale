@@ -37,6 +37,7 @@ class High_Scores_and_Stats
           if @high_score_agents.size > @num_high_scores
             @high_score_agents.pop
           end
+          @min_high_score = high_score_agents.last.fitness
           break
         end
       end
