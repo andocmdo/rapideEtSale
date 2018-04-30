@@ -1,6 +1,7 @@
 class Agent
   attr_accessor :buy_genes, :sell_genes, :hold_genes, :starting_cash
   attr_reader :fitness
+  
   def initialize(conf)
     # make our genome arrays
     @buy_genes = Array.new
@@ -22,8 +23,9 @@ class Agent
     end
   end # init end
 
+  # This actually runs the simulation for each agent
   def calc_fitness
-    #TODO fix this
+    #TODO fix this, run the simulation.
     @fitness = rand
   end
 

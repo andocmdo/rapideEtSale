@@ -89,19 +89,19 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
 # run the steps for the Genetic Algorithm
 (0...max_generations).each do |generation|
   puts "Generation: #{generation}"    # TODO remove for debug
+
   # run agents through sim and calculate fitness
-  # keep a hash of index in population and score
   scores = Array.new
   population.each do |agent|
     scores << agent.calc_fitness
   end
   # feed that hash info to the stats tracker, who will then pull back out
   # the agents that have top scores
-  puts scores   # TODO remove for debug 
+  puts scores   # TODO remove for debug
   stats.feed(scores, population)
 
-
   # xover
+  
 
   # mutate
 end
