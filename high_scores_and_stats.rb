@@ -26,7 +26,6 @@ class High_Scores_and_Stats
       @high_score_agents << agent
     else
       @high_score_agents.each_with_index do |high_score_agent, index|
-        puts "Agent fitness: #{agent.fitness}  High Score Agent fitness: #{high_score_agent.fitness}"
         if agent.fitness > high_score_agent.fitness
           @high_score_agents.insert(index, agent)
           # TODO someday we should check that an equal scoring, but genetically
@@ -53,9 +52,9 @@ class High_Scores_and_Stats
 
   # print high scores
   def print_high_scores
-    puts "\nHigh Scores"
+    puts "High Scores"
     @high_score_agents.each_with_index do |agent, index|
-      puts "#{index}: #{agent.fitness}"
+      puts "#{index}: #{agent} #{agent.fitness}"
     end
   end
 end # class end

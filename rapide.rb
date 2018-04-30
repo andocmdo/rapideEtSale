@@ -14,8 +14,9 @@ else
 end
 
 # create the population
+population_size = config["ga"]["populationSize"]
 population = Array.new
-(0...config["ga"]["populationSize"]).each do
+(0...population_size).each do
   population << Agent.new(config)
 end
 
@@ -34,25 +35,44 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
 
 # run the steps for the Genetic Algorithm
 (0...max_generations).each do |generation|
-  puts "Generation: #{generation}"    # TODO remove for debug
+  puts "\nGeneration: #{generation}"    # TODO remove for debug
 
   # run agents through sim and calculate fitness
   scores = Array.new
   population.each do |agent|
     scores << agent.calc_fitness
   end
-  # feed that hash info to the stats tracker, who will then pull back out
+  # feed that info to the stats tracker, who will then pull back out
   # the agents that have top scores
   puts scores   # TODO remove for debug
   stats.feed(scores, population)
   stats.print_high_scores
 
   # xover
-
-
+  xover_pool = Array.new
+  population.each do |agent|
+    # add n number of agent copies to the mating pool according to xover_pool_size_ratio
+    # and always add at least 1 no matter what (everyone gets a chance)
+    (0...((agent.fitness * xover_pool_size_ratio).to_i + 1)).each do
+      xover_pool << agent
+    end
+  end
+  puts "Crossover pool size: #{xover_pool.size}"
+  # clear out the old population array, get ready to add children from xover pool
+  population = Array.new
+  (0...population_size).each do
+    parentA = xover_pool[rand(xover_pool.size)]
+    parentB = nil
+    loop do
+      parentB = xover_pool[rand(xover_pool.size)]
+      break if !parentA.equal?(parentB)   # don't allow agent to xover with itself
+    end
+    population << parentA.xover(parentB)
+  end
   # mutate
+
 end
 
-puts "\nSimulation Complete!"
+puts "\n\nSimulation Complete! Final stats:"
 stats.print_generations_summary
 stats.print_high_scores

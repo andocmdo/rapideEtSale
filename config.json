@@ -6,7 +6,7 @@
   "ga": {
     "populationSize": 10,
     "mutationRate": 0.07,
-    "xoverPoolSizeRatio": 0.5,
+    "xoverPoolSizeRatio": 5,
     "maxGenerations": 5,
     "numberOfHighScores": 10
   },

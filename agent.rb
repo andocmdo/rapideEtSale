@@ -1,16 +1,16 @@
 class Agent
   attr_accessor :buy_genes, :sell_genes, :hold_genes, :starting_cash
   attr_reader :fitness
-  
+
   def initialize(conf)
+    #save the config for later
+    @conf = conf
     # make our genome arrays
     @buy_genes = Array.new
     @sell_genes = Array.new
     @hold_genes = Array.new
-
     # pull in the startingCash amount
     @starting_cash = conf["agent"]["startingCash"]
-
     # Now load in the appropriate files/classes for genome
     conf["agent"]["buyGenes"].each do |gene_class|
       @buy_genes << Object.const_get(gene_class).new #does init work???
@@ -27,6 +27,10 @@ class Agent
   def calc_fitness
     #TODO fix this, run the simulation.
     @fitness = rand
+  end
+
+  def xover(other)
+    return Agent.new(@conf)
   end
 
   def genes_to_string
