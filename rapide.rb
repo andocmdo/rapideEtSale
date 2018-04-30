@@ -3,7 +3,7 @@ require 'json'
 
 
 class Agent
-  attr_accessor :buy_genes, :sell_genes, :hold_genes
+  attr_accessor :buy_genes, :sell_genes, :hold_genes, :starting_cash
 
   def initialize(conf)
     # make our genome arrays
@@ -12,7 +12,7 @@ class Agent
     @hold_genes = Array.new
 
     # pull in the startingCash amount
-    starting_cash = conf["agent"]["startingCash"]
+    @starting_cash = conf["agent"]["startingCash"]
 
     # Now load in the appropriate files/classes for genome
     conf["agent"]["buyGenes"].each do |gene_class|
@@ -113,7 +113,7 @@ end
 
 # create the population
 population = Array.new
-(0...config["ga"]["populationSize"]).each do |_|
+(0...config["ga"]["populationSize"]).each do
   population << Agent.new(config)
 end
 
@@ -125,3 +125,19 @@ end
 # set the population parameters
 mutation_rate = config["ga"]["mutationRate"]
 xover_pool_size_ratio = config["ga"]["xoverPoolSizeRatio"]
+max_generations = config["ga"]["maxGenerations"]
+
+# initialize the High Scores and Stats recordkeeper
+
+
+# run the steps for the Genetic Algorithm
+(0...max_generations).each do |generation|
+  # run agents through sim and calculate fitness
+  population.each do |agent|
+    agent.calculate_fitness()
+  end
+
+  # xover
+
+  # mutate
+end
