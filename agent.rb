@@ -1,25 +1,27 @@
 class Agent
-  attr_accessor :buy_genes, :sell_genes, :hold_genes, :starting_cash
-  attr_reader :fitness
+  attr_accessor :buy_genes, :sell_genes, :hold_genes, :current_cash
+  attr_reader :fitness, :starting_cash
 
   def initialize(conf)
     #save the config for later
     @conf = conf
     # make our genome arrays
-    @buy_genes = Array.new
-    @sell_genes = Array.new
-    @hold_genes = Array.new
+    @genes = Hash.new
+    @genes["buy"] = Array.new
+    @genes["sell"] = Array.new
+    @genes["hold"] = Array.new
     # pull in the startingCash amount
     @starting_cash = conf["agent"]["startingCash"]
+    @current_cash = conf["agent"]["startingCash"]
     # Now load in the appropriate files/classes for genome
     conf["agent"]["buyGenes"].each do |gene_class|
-      @buy_genes << Object.const_get(gene_class).new #does init work???
+      @genes["buy"] << Object.const_get(gene_class).new
     end
     conf["agent"]["sellGenes"].each do |gene_class|
-      @sell_genes << Object.const_get(gene_class).new
+      @genes["sell"] << Object.const_get(gene_class).new
     end
     conf["agent"]["holdGenes"].each do |gene_class|
-      @hold_genes << Object.const_get(gene_class).new
+      @genes["hold"] << Object.const_get(gene_class).new
     end
   end # init end
 
@@ -30,21 +32,19 @@ class Agent
   end
 
   def xover(other)
-    return Agent.new(@conf)
+    # create a child
+    child = Agent.new(@conf)
+    # mix genes from 50% of each parent into the child
+
   end
 
   def genes_to_string
-    result = "buy genes:"
-    @buy_genes.each do |gene|
-      result = "#{result} #{gene.class.name}: #{gene.to_string}"
-    end
-    result = "#{result}\nsell genes:"
-    @sell_genes.each do |gene|
-      result = "#{result} #{gene.class.name}"
-    end
-    result = "#{result}\nhold genes:"
-    @hold_genes.each do |gene|
-      result = "#{result} #{gene.class.name}"
+    result = "Genes: "
+    @genes.each do |gene_action_type, genes|
+      result = "#{result}\n #{gene_action_type}:"
+      genes.each do |gene|
+        result = "#{result} #{gene.class.name}: #{gene.to_string}"
+      end
     end
     return result
   end
