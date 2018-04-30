@@ -1,5 +1,6 @@
 ##### Remember: Quick and Dirty this time...
 require 'json'
+require 'descriptive_statistics'
 
 # General Classes
 class Agent
@@ -64,6 +65,7 @@ class High_Scores_and_Stats
       # TODO add avg/max/min/stdev for all scores for each generation
       # for each agent at index with some score, check if it is high enough
       # to enter into the high score agents list.
+
       if score > @min_high_score
         add_high_score_agent(population[index])
       end
@@ -81,7 +83,7 @@ class High_Scores_and_Stats
           # different (although same exact action log) agent can be added without
           # being discarded because the score was the same as another "first-come"
           # Agent already on the high scores list...
-          
+
           # now remove the @num_high_scores + 1 item to keep us in limits
           if @high_score_agents.size > @num_high_scores
             @high_score_agents.pop
