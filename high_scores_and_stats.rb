@@ -1,7 +1,7 @@
 class High_Scores_and_Stats
   attr_accessor :num_high_scores
   attr_reader :high_score_agents, :min_high_score, :stats_per_gen_array
-  # TODO add hashes for storing each generations max/min/avg/stdev/etc
+
   def initialize(num_high_scores=10)
     @num_high_scores = num_high_scores  # number of top scoring agents to keep
     @high_score_agents = Array.new      # sorted array of top scoring agents
@@ -26,6 +26,7 @@ class High_Scores_and_Stats
       @high_score_agents << agent
     else
       @high_score_agents.each_with_index do |high_score_agent, index|
+        puts "Agent fitness: #{agent.fitness}  High Score Agent fitness: #{high_score_agent.fitness}"
         if agent.fitness > high_score_agent.fitness
           @high_score_agents.insert(index, agent)
           # TODO someday we should check that an equal scoring, but genetically
@@ -37,14 +38,24 @@ class High_Scores_and_Stats
           if @high_score_agents.size > @num_high_scores
             @high_score_agents.pop
           end
+          break
         end
       end
     end # if/else end
   end # add_high_score_agent end
 
-  def print_summary
+  # print each generations statistics
+  def print_generations_summary
     @stats_per_gen_array.each_with_index do |stat, index|
       puts "Generation #{index}: #{stat}"
+    end
+  end
+
+  # print high scores
+  def print_high_scores
+    puts "\nHigh Scores"
+    @high_score_agents.each_with_index do |agent, index|
+      puts "#{index}: #{agent.fitness}"
     end
   end
 end # class end

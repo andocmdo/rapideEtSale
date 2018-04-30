@@ -7,7 +7,6 @@
     "populationSize": 10,
     "mutationRate": 0.07,
     "xoverPoolSizeRatio": 0.5,
-    "selectionStrategy": "normal",
     "maxGenerations": 5,
     "numberOfHighScores": 10
   },
