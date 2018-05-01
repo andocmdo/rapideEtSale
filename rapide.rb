@@ -1,10 +1,12 @@
 ##### Remember: Quick and Dirty this time...
 require 'json'
 require 'descriptive_statistics'
+require 'mysql2'
 require_relative 'agent'
 require_relative 'high_scores_and_stats'
 require_relative 'gene_classes'
 require_relative 'record'
+
 
 ####################### Script runs below here ################
 # load configuration
@@ -15,8 +17,7 @@ else
 end
 
 # load the records for the simulation
-records = Array.new
-records << Record.new
+records = Record.load_records(config)
 
 # create the population
 population_size = config["ga"]["populationSize"]
@@ -40,7 +41,7 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
   # run agents through sim and calculate fitness
   scores = Array.new
   population.each do |agent|
-    agent.run_sim(record_set)    # run the agent through the simulation first
+    agent.run_sim(records)    # run the agent through the simulation first
     scores << agent.fitness   # then get the fitness
   end
   # feed that info to the stats tracker, who will then pull back out
@@ -80,3 +81,7 @@ end # End generation/simulation loop
 puts "\n\nSimulation Complete! Final stats:"
 #stats.print_generations_summary
 stats.print_high_scores
+puts "Records:"
+records.each_with_index do |record, index|
+  puts "#{index}: #{record}"
+end 
