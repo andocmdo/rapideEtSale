@@ -53,11 +53,19 @@ class Agent
     return child
   end
 
+  def mutate(rate)
+    @genes.each do |gene_action_type, sub_genes|
+      sub_genes.each do |gene|
+        gene.mutate(rate)
+      end
+    end
+  end
+
   def genes_to_string
     result = "Genes: "
-    @genes.each do |gene_action_type, genes|
+    @genes.each do |gene_action_type, sub_genes|
       result = "#{result}\n #{gene_action_type}:"
-      genes.each do |gene|
+      sub_genes.each do |gene|
         result = "#{result} #{gene.class.name}: #{gene.to_string}"
       end
     end
