@@ -111,22 +111,22 @@ class Agent
       @shares = shares_to_buy
       @last_buy_action_index = index
       @action_log << { action: "buy", total_value: total_current_value(record),
-        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash shares: @shares }   # need to fill in more info here
+        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
     else
       @action_log << { action: "unsuccessful_buy", total_value: total_current_value(record),
-        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash shares: @shares }   # need to fill in more info here
+        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
     end
   end
 
   def execute_sell(record, index)
     @action_log << { action: "sell", total_value: total_current_value(record),
-      settled_cash: @settled_cash, unsettled_cash: @unsettled_cash shares: @shares }   # need to fill in more info here
+      settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
   end
 
   def execute_hold(record, index)
     # nothing to do here right now except add to the action log
     @action_log << { action: "hold", total_value: total_current_value(record),
-      settled_cash: @settled_cash, unsettled_cash: @unsettled_cash shares: @shares }   # need to fill in more info here
+      settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
   end
 
   def total_current_value(record)
