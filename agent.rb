@@ -26,9 +26,26 @@ class Agent
   end # init end
 
   # This actually runs the simulation for each agent
-  def calc_fitness
+  def run_sim(records)
     #TODO fix this, run the simulation.
-    @fitness = rand
+    records.each do |record|
+      step(record)
+    end
+    @fitness = rand   #TODO fix this to actually use the simulation score
+  end
+
+  def step(record)
+    # bookeeping first
+    # must settle cash for past sell transactions, etc
+
+    # then check what states are available to us (buy/sell/hold)
+    # this time I am planning on not killing off bad decisions that break rules
+    # I will limit available decisions (such as not able to sell if don't own, etc)
+
+    # Score the state decisions
+
+    # Execute the state decision (But limiting to available/possible options)
+
   end
 
   def xover(other)
