@@ -26,4 +26,20 @@ class Record
     @record_hash = input_hash
   end
 
+  def purchase_price
+    # we can change the returned purchase price here
+    # maybe put a fudge factor in the config file
+    # or return some random value between high/low of the day
+    # TODO implement that later, for now it will be close price
+    return @record_hash["close"]
+  end
+
+  def sell_price
+    # we can change the returned purchase price here
+    # maybe put a fudge factor in the config file
+    # or return some random value between high/low of the day
+    # TODO implement that later, for now it will be close price
+    return @record_hash["close"]
+  end
+
 end # class end
