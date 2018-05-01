@@ -55,8 +55,13 @@ class Agent
       # it's over the time allowed (3 days?)
       if (index - @last_sale_action_index) > @settle_cash_interval
         @settled_cash += @unsettled_cash
-        @unsettled_cash = 0.0 
+        @unsettled_cash = 0.0
+      end
     end
+    # I was going to add a wait time for selling a stock, but skipping that now
+    # per rules that say you can sell immediately the next day without being
+    # flagged a day trader
+
 
     # then check what states are available to us (buy/sell/hold)
     # this time I am planning on not killing off bad decisions that break rules
@@ -64,8 +69,34 @@ class Agent
 
     # Score the state decisions
 
+
     # Execute the state decision (But limiting to available/possible options)
 
+  end
+
+  def score_buy
+
+  end
+
+  def score_sell
+
+  end
+
+  def score_hold
+
+  end
+
+  def execute_buy
+
+  end
+
+  def execute_sell
+
+  end
+
+  def execute_hold
+    # nothing to do here right now except add to the action log
+    @actions << { action: "hold" }
   end
 
   def xover(other)
