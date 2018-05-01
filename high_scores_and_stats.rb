@@ -24,6 +24,8 @@ class High_Scores_and_Stats
   def add_high_score_agent(agent)
     if @high_score_agents.empty?  # if this is the first entry, nothing to compare to
       @high_score_agents << agent
+    elsif (agent.fitness <= @min_high_score) && (@high_score_agents.size < @num_high_scores)
+      @high_score_agents.push(agent)
     else
       @high_score_agents.each_with_index do |high_score_agent, index|
         if agent.fitness > high_score_agent.fitness
@@ -32,16 +34,16 @@ class High_Scores_and_Stats
           # different (although same exact action log) agent can be added without
           # being discarded because the score was the same as another "first-come"
           # Agent already on the high scores list...
-
-          # now remove the @num_high_scores + 1 item to keep us in limits
-          if @high_score_agents.size > @num_high_scores
-            @high_score_agents.pop
-          end
-          @min_high_score = high_score_agents.last.fitness
           break
         end
-      end
+      end # existing scores loop end
     end # if/else end
+    # now if necessary remove the @num_high_scores + 1 item to keep us in limits
+    if @high_score_agents.size > @num_high_scores
+      @high_score_agents.pop
+    end
+    # and make sure min score is updated
+    @min_high_score = @high_score_agents.last.fitness
   end # add_high_score_agent end
 
   # print each generations statistics
