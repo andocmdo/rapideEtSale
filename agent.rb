@@ -130,7 +130,7 @@ class Agent
   end
 
   def total_current_value(record)
-    return @settled_cash + @unsettled_cash + (@shares * record.sell_price)
+    return @settled_cash + @unsettled_cash + (@shares * record.sale_price)
   end
 
   def xover(other)
