@@ -1,5 +1,5 @@
 class Agent
-  attr_accessor :genes, :allowed_actions, :action_log
+  attr_accessor :genes, :allowed_actions, :action_log, :total_value
   attr_accessor :last_sale_action_index, :last_buy_action_index
   attr_accessor :settled_cash, :unsettled_cash, :trade_cost, :shares
   attr_reader :fitness, :starting_cash
@@ -85,7 +85,9 @@ class Agent
       execute_hold(record, index)
     end
 
-  end
+    # update the total_current_value
+    @total_value = total_current_value(record)
+  end # step method end
 
   def score_buy(record, index)
     # remember that this must return a normalized value, according to how
@@ -129,6 +131,7 @@ class Agent
       settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
   end
 
+  # need to make a way to get value without a record...
   def total_current_value(record)
     return @settled_cash + @unsettled_cash + (@shares * record.sale_price)
   end

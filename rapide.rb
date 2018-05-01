@@ -81,7 +81,3 @@ end # End generation/simulation loop
 puts "\n\nSimulation Complete! Final stats:"
 #stats.print_generations_summary
 stats.print_high_scores
-puts "Records:"
-records.each_with_index do |record, index|
-  puts "#{index}: #{record}"
-end
