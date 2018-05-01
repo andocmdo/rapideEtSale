@@ -16,8 +16,8 @@ class Record
     client = Mysql2::Client.new(:host => host, :username => username, :password => password, :database => database)
     results = client.query("SELECT * FROM #{table} WHERE symbol='#{symbol}' AND ldate>=#{ldate_from} AND ldate<=#{ldate_to} ORDER BY ldate")
 
-    results.each do |row|
-      records_array << row
+    results.each do |row_hash|
+      records_array << Record.new(row_hash)
     end
     return records_array
   end
