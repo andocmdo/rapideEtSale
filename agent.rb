@@ -1,18 +1,19 @@
 class Agent
-  attr_accessor :genes, :current_cash
+  attr_accessor :genes, :allowed_actions, :actions
+  attr_accessor :last_sale_action_index, :last_buy_action_index
+  attr_accessor :settled_cash, :unsettled_cash
   attr_reader :fitness, :starting_cash
 
   def initialize(conf)
     #save the config for later
     @conf = conf
+
     # make our genome arrays
     @genes = Hash.new
     @genes["buy"] = Array.new
     @genes["sell"] = Array.new
     @genes["hold"] = Array.new
-    # pull in the startingCash amount
-    @starting_cash = conf["agent"]["startingCash"]
-    @current_cash = conf["agent"]["startingCash"]
+
     # Now load in the appropriate files/classes for genome
     conf["agent"]["buyGenes"].each do |gene_class|
       @genes["buy"] << Object.const_get(gene_class).new
@@ -23,20 +24,39 @@ class Agent
     conf["agent"]["holdGenes"].each do |gene_class|
       @genes["hold"] << Object.const_get(gene_class).new
     end
+
+    # initialize the possible actions
+    @allowed_actions = ["buy", "sell", "hold"]
+    @actions = Array.new  # will be an array of hashes for each action per step/day
+    @last_buy_action_index = nil    # kinda jank...
+    @last_sale_action_index = nil   # kinda jank...
+
+    # pull in the startingCash amount
+    @starting_cash = conf["agent"]["startingCash"]
+    @settled_cash = conf["agent"]["startingCash"]
+    @unsettled_cash = 0.0
+    @settle_cash_interval = conf["agent"]["settleCashInterval"]
   end # init end
 
   # This actually runs the simulation for each agent
   def run_sim(records)
     #TODO fix this, run the simulation.
-    records.each do |record|
-      step(record)
+    records.each_with_index do |record, index|
+      step(record, index)
     end
     @fitness = rand   #TODO fix this to actually use the simulation score
   end
 
-  def step(record)
+  def step(record, index)
     # bookeeping first
     # must settle cash for past sell transactions, etc
+    if @unsettled_cash > 0.0
+      # check the time since last sell and settle cash if
+      # it's over the time allowed (3 days?)
+      if (index - @last_sale_action_index) > @settle_cash_interval
+        @settled_cash += @unsettled_cash
+        @unsettled_cash = 0.0 
+    end
 
     # then check what states are available to us (buy/sell/hold)
     # this time I am planning on not killing off bad decisions that break rules
