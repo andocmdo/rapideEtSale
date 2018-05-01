@@ -57,7 +57,7 @@ class High_Scores_and_Stats
   def print_high_scores
     puts "High Scores"
     @high_score_agents.each_with_index do |agent, index|
-      puts "#{index}: #{agent} #{agent.fitness}"
+      puts "#{index}: #{agent.fitness} #{agent.total_value}"
     end
   end
 end # class end
