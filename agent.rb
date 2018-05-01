@@ -47,7 +47,7 @@ class Agent
     records.each_with_index do |record, index|
       step(record, index)
     end
-    @fitness = rand   #TODO fix this to actually use the simulation score
+    @fitness = @total_value / @starting_cash    #TODO fix this to actually use the simulation score
   end
 
   def step(record, index)
@@ -121,8 +121,17 @@ class Agent
   end
 
   def execute_sell(record, index)
-    @action_log << { action: "sell", total_value: total_current_value(record),
-      settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
+    if @shares >= 1
+      transaction_profit = @shares * record.sale_price
+      @unsettled_cash += transaction_profit - @trade_cost
+      @shares = 0
+      @last_sale_action_index = index
+      @action_log << { action: "sell", total_value: total_current_value(record),
+        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
+    else
+      @action_log << { action: "unsuccessful_sell", total_value: total_current_value(record),
+        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
+    end
   end
 
   def execute_hold(record, index)
