@@ -21,9 +21,11 @@ population = Array.new
 end
 
 # DEBUG remove later
+=begin
 population.each do |agent|
   puts agent.genes_to_string
 end
+=end
 
 # set the population parameters
 mutation_rate = config["ga"]["mutationRate"]
@@ -44,7 +46,7 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
   end
   # feed that info to the stats tracker, who will then pull back out
   # the agents that have top scores
-  puts scores   # TODO remove for debug
+  #puts scores   # TODO remove for debug
   stats.feed(scores, population)
   stats.print_high_scores
 
@@ -57,7 +59,7 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
       xover_pool << agent
     end
   end
-  puts "Crossover pool size: #{xover_pool.size}"
+  #puts "Crossover pool size: #{xover_pool.size}"
   # clear out the old population array, get ready to add children from xover pool
   population = Array.new
   (0...population_size).each do
@@ -69,8 +71,11 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
     end
     population << parentA.xover(parentB)
   end
-  # mutate
 
+  # mutate
+  population.each do |agent|
+    agent.mutate(mutation_rate)
+  end
 end
 
 puts "\n\nSimulation Complete! Final stats:"

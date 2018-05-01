@@ -4,7 +4,7 @@
     "debug": false
   },
   "ga": {
-    "populationSize": 150,
+    "populationSize": 100,
     "mutationRate": 0.07,
     "xoverPoolSizeRatio": 4,
     "maxGenerations": 500,
