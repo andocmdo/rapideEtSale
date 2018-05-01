@@ -1,11 +1,11 @@
 {
   "system": {
-    "logfile": "test_delete_me.log",
-    "debug": false
+    "debug": false,
+    "printFinalStats": false
   },
   "ga": {
-    "populationSize": 10,
-    "mutationRate": 0.07,
+    "populationSize": 5,
+    "mutationRate": 0.05,
     "xoverPoolSizeRatio": 4,
     "maxGenerations": 10,
     "numberOfHighScores": 5

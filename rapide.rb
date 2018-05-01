@@ -58,7 +58,7 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
     (0...((agent.fitness * xover_pool_size_ratio).to_i + 1)).each do
       xover_pool << agent
     end
-  end
+  end # xover pool filling loop end
   #puts "Crossover pool size: #{xover_pool.size}"
   # clear out the old population array, get ready to add children from xover pool
   population = Array.new
@@ -70,13 +70,13 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
       break if !parentA.equal?(parentB)   # don't allow agent to xover with itself
     end
     population << parentA.xover(parentB)
-  end
+  end # crossover loop
 
   # mutate
   population.each do |agent|
     agent.mutate(mutation_rate)
-  end
-end
+  end # end mutation loop
+end # End generation/simulation loop
 
 puts "\n\nSimulation Complete! Final stats:"
 #stats.print_generations_summary
