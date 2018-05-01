@@ -1,7 +1,7 @@
 class Agent
-  attr_accessor :genes, :allowed_actions, :actions
+  attr_accessor :genes, :allowed_actions, :action_log
   attr_accessor :last_sale_action_index, :last_buy_action_index
-  attr_accessor :settled_cash, :unsettled_cash
+  attr_accessor :settled_cash, :unsettled_cash, :trade_cost, :shares
   attr_reader :fitness, :starting_cash
 
   def initialize(conf)
@@ -25,17 +25,20 @@ class Agent
       @genes["hold"] << Object.const_get(gene_class).new
     end
 
+    # TODO I need to put all these variables in a hash for easy printing....
+
     # initialize the possible actions
-    @allowed_actions = ["buy", "sell", "hold"]
-    @actions = Array.new  # will be an array of hashes for each action per step/day
+    @action_log = Array.new  # will be an array of hashes for each action per step/day
     @last_buy_action_index = nil    # kinda jank...
     @last_sale_action_index = nil   # kinda jank...
 
-    # pull in the startingCash amount
+    # pull in the startingCash amount, etc
     @starting_cash = conf["agent"]["startingCash"]
     @settled_cash = conf["agent"]["startingCash"]
     @unsettled_cash = 0.0
     @settle_cash_interval = conf["agent"]["settleCashInterval"]
+    @trade_cost = conf["agent"]["tradeCost"]
+    @shares = 0
   end # init end
 
   # This actually runs the simulation for each agent
@@ -62,41 +65,72 @@ class Agent
     # per rules that say you can sell immediately the next day without being
     # flagged a day trader
 
+    # Score the state decisions
+    buy_score = score_buy(record, index)
+    sell_score = score_sell(record, index)
+    hold_score = score_hold(record, index, buy_score, sell_score)
 
     # then check what states are available to us (buy/sell/hold)
     # this time I am planning on not killing off bad decisions that break rules
     # I will limit available decisions (such as not able to sell if don't own, etc)
 
-    # Score the state decisions
-
-
     # Execute the state decision (But limiting to available/possible options)
+    if buy_score > sell_score && buy_score > hold_score
+      # TODO check available allowed_actions. I think the only limitation is on
+      # buying within 3 days (before cash has settled)
+      execute_buy(record, index)
+    elsif sell_score > buy_score && sell_score > hold_score
+      execute_sell(record, index)
+    else
+      execute_hold(record, index)
+    end
 
   end
 
-  def score_buy
-
+  def score_buy(record, index)
+    # remember that this must return a normalized value, according to how
+    # many items it scored, so that actions with lots of genes don't get
+    # preferential treatement
+    rand
   end
 
-  def score_sell
-
+  def score_sell(record, index)
+    rand
   end
 
-  def score_hold
-
+  def score_hold(record, index, buy, hold)
+    rand
   end
 
-  def execute_buy
-
+  def execute_buy(record, index)
+    # bookeeping first
+    if @settled_cash > (record.purchase_price + @trade_cost) # we have enough to buy at least 1 share
+      shares_to_buy = ((@settled_cash - @trade_cost) / record.purchase_price).to_i
+      transaction_cost = shares_to_buy * record.purchase_price + @trade_cost
+      @settled_cash -= transaction_cost
+      @shares = shares_to_buy
+      @last_buy_action_index = index
+      @action_log << { action: "buy", total_value: total_current_value(record),
+        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash shares: @shares }   # need to fill in more info here
+    else
+      @action_log << { action: "unsuccessful_buy", total_value: total_current_value(record),
+        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash shares: @shares }   # need to fill in more info here
+    end
   end
 
-  def execute_sell
-
+  def execute_sell(record, index)
+    @action_log << { action: "sell", total_value: total_current_value(record),
+      settled_cash: @settled_cash, unsettled_cash: @unsettled_cash shares: @shares }   # need to fill in more info here
   end
 
-  def execute_hold
+  def execute_hold(record, index)
     # nothing to do here right now except add to the action log
-    @actions << { action: "hold" }
+    @action_log << { action: "hold", total_value: total_current_value(record),
+      settled_cash: @settled_cash, unsettled_cash: @unsettled_cash shares: @shares }   # need to fill in more info here
+  end
+
+  def total_current_value(record)
+    return @settled_cash + @unsettled_cash + (@shares * record.sell_price)
   end
 
   def xover(other)
