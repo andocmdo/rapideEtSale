@@ -15,7 +15,7 @@ class High_Scores_and_Stats
     scores.each_with_index do |score, index|
       # for each agent at index with some score, check if it is high enough
       # to enter into the high score agents list.
-      if score > @min_high_score
+      if (score > @min_high_score) || (@high_score_agents.size < @num_high_scores)
         add_high_score_agent(population[index])
       end
     end #scores.each end

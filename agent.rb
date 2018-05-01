@@ -34,8 +34,8 @@ class Agent
   def xover(other)
     # create a child
     child = Agent.new(@conf)
-    puts "DEBUG XOVER"
-    puts "child: genes: #{genes} "
+    #puts "DEBUG XOVER"
+    #puts "child: genes: #{genes} "
     # mix genes from 50% of each parent into the child
     child.genes.each do |gene_action_type, gene_class_array|  # buy, sell, hold
       gene_class_array.each_with_index do |gene_class, gene_class_index|  # gene classes
