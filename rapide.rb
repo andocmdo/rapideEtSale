@@ -40,8 +40,8 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
   # run agents through sim and calculate fitness
   scores = Array.new
   population.each do |agent|
-    agent.run_sim(records)    # run the agent through the simulation first
-    scores << agent.fitness   # then get the fitness 
+    agent.run_sim(record_set)    # run the agent through the simulation first
+    scores << agent.fitness   # then get the fitness
   end
   # feed that info to the stats tracker, who will then pull back out
   # the agents that have top scores
