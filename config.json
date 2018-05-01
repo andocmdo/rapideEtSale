@@ -4,11 +4,11 @@
     "debug": false
   },
   "ga": {
-    "populationSize": 10,
+    "populationSize": 150,
     "mutationRate": 0.07,
-    "xoverPoolSizeRatio": 5,
-    "maxGenerations": 5,
-    "numberOfHighScores": 10
+    "xoverPoolSizeRatio": 4,
+    "maxGenerations": 500,
+    "numberOfHighScores": 20
   },
   "agent": {
     "startingCash": 10000,

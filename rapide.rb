@@ -74,5 +74,5 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
 end
 
 puts "\n\nSimulation Complete! Final stats:"
-stats.print_generations_summary
+#stats.print_generations_summary
 stats.print_high_scores
