@@ -1,5 +1,5 @@
 class Record
-  attr_reader :record_hash
+  attr_accessor :record_hash
 
   def self.load_records(config) # I'd like to make this a specific hash only...
     host = config["records"]["host"]

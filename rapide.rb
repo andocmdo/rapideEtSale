@@ -32,6 +32,7 @@ xover_pool_size_ratio = config["ga"]["xoverPoolSizeRatio"]
 max_generations = config["ga"]["maxGenerations"]
 
 # initialize the High Scores and Stats recordkeeper
+# TODO send just the config, so that we can add more options later
 stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
 
 # run the steps for the Genetic Algorithm
@@ -46,7 +47,6 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
   end
   # feed that info to the stats tracker, who will then pull back out
   # the agents that have top scores
-  #puts scores   # TODO remove for debug
   stats.feed(scores, population)
   stats.print_high_scores
 
@@ -84,4 +84,4 @@ stats.print_high_scores
 puts "Records:"
 records.each_with_index do |record, index|
   puts "#{index}: #{record}"
-end 
+end
