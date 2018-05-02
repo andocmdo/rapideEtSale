@@ -112,11 +112,9 @@ class Agent
       @settled_cash -= transaction_cost
       @shares = shares_to_buy
       @last_buy_action_index = index
-      @action_log << { action: "buy", total_value: total_current_value(record),
-        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
+      add_action_to_log("buy", record, index)
     else
-      @action_log << { action: "unsuccessful_buy", total_value: total_current_value(record),
-        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
+      add_action_to_log("unsuccessful_buy", record, index)
     end
   end
 
@@ -126,18 +124,20 @@ class Agent
       @unsettled_cash += transaction_profit - @trade_cost
       @shares = 0
       @last_sale_action_index = index
-      @action_log << { action: "sell", total_value: total_current_value(record),
-        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
+      add_action_to_log("sell", record, index)
     else
-      @action_log << { action: "unsuccessful_sell", total_value: total_current_value(record),
-        settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
+      add_action_to_log("unsuccessful_sell", record, index)
     end
   end
 
   def execute_hold(record, index)
     # nothing to do here right now except add to the action log
-    @action_log << { action: "hold", total_value: total_current_value(record),
-      settled_cash: @settled_cash, unsettled_cash: @unsettled_cash, shares: @shares }   # need to fill in more info here
+    add_action_to_log("hold", record, index)
+  end
+
+  def add_action_to_log(action, record, index)
+    @action_log << { id: index, action: action, total_value: total_current_value(record).to_f,
+      settled_cash: @settled_cash.to_f, unsettled_cash: @unsettled_cash.to_f, shares: @shares }   # need to fill in more info here
   end
 
   # need to make a way to get value without a record...
@@ -148,8 +148,6 @@ class Agent
   def xover(other)
     # create a child
     child = Agent.new(@conf)
-    #puts "DEBUG XOVER"
-    #puts "child: genes: #{genes} "
     # mix genes from 50% of each parent into the child
     child.genes.each do |gene_action_type, gene_class_array|  # buy, sell, hold
       gene_class_array.each_with_index do |gene_class, gene_class_index|  # gene classes
