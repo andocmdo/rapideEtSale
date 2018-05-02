@@ -21,8 +21,12 @@ class SmaPercentAbove
       #TODO this will never work, since we will likely need to rely on the order for which these
       # items are computed. For instance, if this requires the use of avgOHLC, then before using it
       # we are going to need to be sure it's been computed... hmmmm
+<<<<<<< HEAD
       # might need to track dependencies... or just make a check dependencies method
       # and list the dependencies in the config file!
+=======
+      # might need to track dependencies...
+>>>>>>> d6f292884be44d6ff850f093d4dfbb453158ade5
     end
   end
 
