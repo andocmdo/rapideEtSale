@@ -141,7 +141,11 @@ class BuySellSignalsWithinPercentDiff
 
   def mutate(rate)        # We mutate each gene component individually
     if rand < rate
+<<<<<<< HEAD
       @codons["percent"] = rand
+=======
+      @codons["interval"] = rand(200)
+>>>>>>> 6f8c15fae7d8fee0a6f2bdf8f7c17ad83f9f38fe
     end
     if rand < rate
       @codons["weight"] = rand
