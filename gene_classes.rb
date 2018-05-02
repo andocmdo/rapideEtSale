@@ -1,3 +1,30 @@
+### This random is to be used fo testing only
+class SingleRandomForTestingOnly
+  attr_accessor :codons
+  def initialize
+    # only one random codon
+    @codons = Hash.new
+    @codons["weight"] = rand
+  end
+
+  def calc(record)
+    # normally this would check for the activation of this scenario or trigger
+    # and would then return the weight as the "points", which will later be
+    # added up and normalized,
+    return rand 
+  end
+
+  def mutate(rate)
+    # no need to mutate since it returns random
+  end
+
+  def to_string
+    @codons.each do |codon_key, codon_val|
+      "#{codon_key}: #{codon_val}"
+    end
+  end
+end
+
 ###### Gene Classes ########
 class SmaPercentAbove
   attr_accessor :codons
