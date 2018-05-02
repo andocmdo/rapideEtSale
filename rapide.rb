@@ -59,6 +59,7 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
       xover_pool << agent
     end
   end # xover pool filling loop end
+  #puts xover_pool.size 
 
   # clear out the old population array, get ready to add children from xover pool
   population = Array.new
