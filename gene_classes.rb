@@ -5,7 +5,7 @@ class SmaPercentAbove
     # these class variables are the individual codons/parts of the gene itself
     @codons = Hash.new
     @codons["percent"] = rand       # limit for activation. are we above the x% SMA(interval)?
-    @codons["interval"] = rand(200) # interval to calculate the SMA, (such as SMA(200) is 200 day moving average)
+    @codons["interval"] = rand(200) + 1 # interval to calculate the SMA, (such as SMA(200) is 200 day moving average)
     @codons["weight"] = rand        # weight to assign this gene
   end
 
@@ -18,7 +18,7 @@ class SmaPercentAbove
       @codons["percent"] = rand
     end
     if rand < rate
-      @codons["interval"] = rand(200)
+      @codons["interval"] = rand(200) + 1
     end
     if rand < rate
       @codons["weight"] = rand
@@ -39,7 +39,7 @@ class PercentChangePos
     # these class variables are the individual codons/parts of the gene itself
     @codons = Hash.new
     @codons["percent"] = rand       # limit for activation. are we above the x% change (interval)?
-    @codons["interval"] = rand(200) # how long ago to calculate the percent change from
+    @codons["interval"] = rand(200) + 1 # how long ago to calculate the percent change from
     @codons["weight"] = rand        # weight to assign this gene
   end
 
@@ -52,7 +52,7 @@ class PercentChangePos
       @codons["percent"] = rand
     end
     if rand < rate
-      @codons["interval"] = rand(200)
+      @codons["interval"] = rand(200) + 1
     end
     if rand < rate
       @codons["weight"] = rand
@@ -72,7 +72,7 @@ class TimeSinceLastBuy
   def initialize
     # these class variables are the individual codons/parts of the gene itself
     @codons = Hash.new
-    @codons["interval"] = rand(200) # time since last buy action
+    @codons["interval"] = rand(200) + 1 # time since last buy action
     @codons["weight"] = rand        # weight to assign this gene
   end
 
@@ -82,7 +82,7 @@ class TimeSinceLastBuy
 
   def mutate(rate)        # We mutate each gene component individually
     if rand < rate
-      @codons["interval"] = rand(200)
+      @codons["interval"] = rand(200) + 1
     end
     if rand < rate
       @codons["weight"] = rand
@@ -102,13 +102,13 @@ class TimeSinceLastSell
   def initialize
     # these class variables are the individual codons/parts of the gene itself
     @codons = Hash.new
-    @codons["interval"] = rand(200) # time since last sell action
+    @codons["interval"] = rand(200) + 1 # time since last sell action
     @codons["weight"] = rand        # weight to assign this gene
   end
 
   def mutate(rate)        # We mutate each gene component individually
     if rand < rate
-      @codons["interval"] = rand(200)
+      @codons["interval"] = rand(200) + 1
     end
     if rand < rate
       @codons["weight"] = rand
@@ -141,7 +141,7 @@ class BuySellSignalsWithinPercentDiff
 
   def mutate(rate)        # We mutate each gene component individually
     if rand < rate
-      @codons["interval"] = rand(200)
+      @codons["percent"] = rand
     end
     if rand < rate
       @codons["weight"] = rand
