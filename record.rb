@@ -1,8 +1,8 @@
 class Record
-  attr_accessor :record_hash
+  attr_accessor :data
 
   def initialize(input_hash)
-    @record_hash = input_hash
+    @data = input_hash
   end
 
   def purchase_price
@@ -10,7 +10,7 @@ class Record
     # maybe put a fudge factor in the config file
     # or return some random value between high/low of the day
     # TODO implement that later, for now it will be close price
-    return @record_hash["close"]
+    return @data["close"]
   end
 
   def sale_price
@@ -18,10 +18,10 @@ class Record
     # maybe put a fudge factor in the config file
     # or return some random value between high/low of the day
     # TODO implement that later, for now it will be close price
-    return @record_hash["close"]
+    return @data["close"]
   end
 
-### Static method for loading records 
+### Static method for loading records
   def self.load_records(config) # I'd like to make this a specific hash only...
     host = config["records"]["host"]
     username = config["records"]["username"]
