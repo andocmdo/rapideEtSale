@@ -10,8 +10,18 @@ class SmaPercentAbove
   end
 
   def calc(record)
-    if !record.data_hash.key?("sma")
-
+    sma_for_interval = 0.0
+    if !record.data.key?("sma")     # if it doesn't yet exists in the records hash
+      record.data["sma"] = Hash.new # put it in there
+    end
+    if record.data["sma"].key?(@codons["interval"])   # then if we already have a value for that interval
+      sma_for_interval = record.data["sma"][@codons["interval"]]  # then get it
+    else
+      sum = 0.0
+      #TODO this will never work, since we will likely need to rely on the order for which these
+      # items are computed. For instance, if this requires the use of avgOHLC, then before using it
+      # we are going to need to be sure it's been computed... hmmmm
+      # might need to track dependencies...
     end
   end
 
