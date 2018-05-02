@@ -41,7 +41,6 @@ class Agent
     @shares = 0
   end # init end
 
-  # This actually runs the simulation for each agent
   def run_sim(records)
     #TODO fix this, run the simulation.
     records.each_with_index do |record, index|
@@ -93,15 +92,27 @@ class Agent
     # remember that this must return a normalized value, according to how
     # many items it scored, so that actions with lots of genes don't get
     # preferential treatement
-    rand
+    sum = 0.0
+    @genes["buy"].each do |gene|
+      sum += gene.calc(record)
+    end
+    return sum / @genes["buy"].size   # normalize by dividing by the number of genes
   end
 
   def score_sell(record, index)
-    rand
+    sum = 0.0
+    @genes["sell"].each do |gene|
+      sum += gene.calc(record)
+    end
+    return sum / @genes["sell"].size
   end
 
   def score_hold(record, index, buy, hold)
-    rand
+    sum = 0.0
+    @genes["hold"].each do |gene|
+      sum += gene.calc(record)
+    end
+    return sum / @genes["hold"].size
   end
 
   def execute_buy(record, index)
