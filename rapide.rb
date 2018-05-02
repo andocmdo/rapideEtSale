@@ -59,7 +59,7 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
       xover_pool << agent
     end
   end # xover pool filling loop end
-  #puts "Crossover pool size: #{xover_pool.size}"
+
   # clear out the old population array, get ready to add children from xover pool
   population = Array.new
   (0...population_size).each do
@@ -80,4 +80,4 @@ end # End generation/simulation loop
 
 puts "\n\nSimulation Complete! Final stats:"
 #stats.print_generations_summary
-stats.print_high_scores
+stats.print_high_scores_with_actions
