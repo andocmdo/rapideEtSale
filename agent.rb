@@ -4,6 +4,7 @@ class Agent
   attr_accessor :settled_cash, :unsettled_cash, :trade_cost, :shares
   attr_reader :fitness, :starting_cash
 
+  # Constructor
   def initialize(conf)
     #save the config for later
     @conf = conf
