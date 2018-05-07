@@ -21,6 +21,13 @@ class Record
     return @data["close"]
   end
 
+  # Can't decide if I'm going to put required methods in the this record class,
+  # or add them dynamically in the gene classes (since they know what they need)
+  # I guess some basic/general ones will be put here
+  def avgOHLC
+    return (@data["open"] + @data["high"] + @data["low"] + @data["close"]) / 4
+  end
+
 ### Static method for loading records
   def self.load_records(config) # I'd like to make this a specific hash only...
     host = config["records"]["host"]
