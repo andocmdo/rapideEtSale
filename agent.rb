@@ -95,7 +95,7 @@ class Agent
     # preferential treatement
     sum = 0.0
     @genes["buy"].each do |gene|
-      sum += gene.calc(record)
+      sum += gene.calc(record, index)
     end
     return sum / @genes["buy"].size   # normalize by dividing by the number of genes
   end
@@ -103,7 +103,7 @@ class Agent
   def score_sell(record, index)
     sum = 0.0
     @genes["sell"].each do |gene|
-      sum += gene.calc(record)
+      sum += gene.calc(record, index)
     end
     return sum / @genes["sell"].size
   end
@@ -111,7 +111,7 @@ class Agent
   def score_hold(record, index, buy, hold)
     sum = 0.0
     @genes["hold"].each do |gene|
-      sum += gene.calc(record)
+      sum += gene.calc(record, index)
     end
     return sum / @genes["hold"].size
   end
