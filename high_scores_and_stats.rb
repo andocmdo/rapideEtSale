@@ -62,9 +62,9 @@ class High_Scores_and_Stats
 
   # print high scores
   def print_high_scores_with_actions
-    puts "High Scores with Action log"
+    puts "High Scores with Action log:"
     @high_score_agents.each_with_index do |agent, index|
-      puts "   #{index}: #{agent.fitness.to_f} #{agent.total_value.to_f} #{JSON.generate(agent.action_log)}"
+      puts "   #{index}: #{agent.fitness.to_f} #{agent.total_value.to_f} #{JSON.pretty_generate(agent.action_log)}"
     end
   end
 end # class end
