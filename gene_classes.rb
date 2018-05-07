@@ -4,7 +4,7 @@ class SmaPercent
   def initialize
     # these class variables are the individual codons/parts of the gene itself
     @codons = Hash.new
-    @codons["percent"] = rand       # limit for activation. are we above the x% SMA(interval)?
+    @codons["percent"] = (rand * 2.0) - 1.0       # limit for activation. are we above the x% SMA(interval)?
     @codons["interval"] = rand(200) + 1 # interval to calculate the SMA, (such as SMA(200) is 200 day moving average)
     @codons["over_under"] = [true, false].sample  # true is over the percentage, false is under
     @codons["weight"] = rand        # weight to assign this gene
