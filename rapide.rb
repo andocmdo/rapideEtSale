@@ -17,7 +17,8 @@ else
 end
 
 # load the records for the simulation
-records = Record.load_records(config)
+# TODO make this a singleton or something, this is trashy
+$records = Record.load_records(config)
 
 # create the population
 population_size = config["ga"]["populationSize"]
@@ -59,7 +60,7 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
       xover_pool << agent
     end
   end # xover pool filling loop end
-  #puts xover_pool.size 
+  #puts xover_pool.size
 
   # clear out the old population array, get ready to add children from xover pool
   population = Array.new
