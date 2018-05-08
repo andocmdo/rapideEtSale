@@ -22,9 +22,41 @@ class SmaPercent
     # right now it's either activated or not, (on/off), maybe in future we can
     # return adjusted values according to some activation function (sigmoid?)
     # for how close it is within it's desired bounds.
-    #puts "record.avgOHLC: #{record.avgOHLC}  record.sma(#{@codons["interval"]}): #{record.sma(@codons["interval"])}"
+    if !record.respond_to?("sma")
+      Record.class_eval do
+        def sma(interval)
+          if interval == 0
+            sma_for_interval = avgOHLC
+          elsif @data["sma"].key?(interval) # if it's already been computed
+            return @data["sma"][interval]   # return precomputed value
+          else
+            # calculate it
+            # if the reqested interval is too far behind our list of records
+            # then limit it to the maximum length from our current record index
+            index = $records.index(self)
+            if index < interval
+              limited_interval = index
+              sum = 0.0
+              (0..limited_interval).each do |i|
+                sum += $records[index - i].avgOHLC
+              end
+              @data["sma"][limited_interval] = sum / interval
+              return @data["sma"][limited_interval]
+            else
+              # here is the calculation part
+              sum = 0.0
+              (0..interval).each do |i|
+                sum += $records[index - i].avgOHLC
+              end
+              @data["sma"][interval] = sum / interval
+              return @data["sma"][interval]
+            end
+          end
+        end # end of sma method
+      end # end of Record.class_eval
+    end # end of method check
+
     current_percent_from_sma = (record.avgOHLC / record.sma(@codons["interval"])) - 1.0
-    #puts "current_percent_from_sma: #{current_percent_from_sma}"
     if @codons["above"]   # if we are checking for above
       if current_percent_from_sma > @codons["percent"]
         return @codons["weight"]
