@@ -4,8 +4,9 @@ require 'descriptive_statistics'
 require 'mysql2'
 require_relative 'agent'
 require_relative 'high_scores_and_stats'
-require_relative 'gene_classes'
 require_relative 'record'
+require_relative 'gene_classes'
+
 
 
 ####################### Script runs below here ################
@@ -43,7 +44,7 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
   # run agents through sim and calculate fitness
   scores = Array.new
   population.each do |agent|
-    agent.run_sim(records)    # run the agent through the simulation first
+    agent.run_sim($records)    # run the agent through the simulation first
     scores << agent.fitness   # then get the fitness
   end
   # feed that info to the stats tracker, who will then pull back out
@@ -82,4 +83,5 @@ end # End generation/simulation loop
 
 puts "\n\nSimulation Complete! Final stats:"
 #stats.print_generations_summary
-stats.print_high_scores_with_actions
+#stats.print_high_scores_with_actions
+stats.print_high_scores_with_genes
