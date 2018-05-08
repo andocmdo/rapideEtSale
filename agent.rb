@@ -95,7 +95,7 @@ class Agent
     # preferential treatement
     sum = 0.0
     @genes["buy"].each do |gene|
-      sum += gene.calc(record, index)
+      sum += gene.calc(record)
     end
     return sum / @genes["buy"].size   # normalize by dividing by the number of genes
   end
@@ -103,7 +103,7 @@ class Agent
   def score_sell(record, index)
     sum = 0.0
     @genes["sell"].each do |gene|
-      sum += gene.calc(record, index)
+      sum += gene.calc(record)
     end
     return sum / @genes["sell"].size
   end
@@ -111,7 +111,7 @@ class Agent
   def score_hold(record, index, buy, hold)
     sum = 0.0
     @genes["hold"].each do |gene|
-      sum += gene.calc(record, index)
+      sum += gene.calc(record)
     end
     return sum / @genes["hold"].size
   end
@@ -183,6 +183,18 @@ class Agent
         gene.mutate(rate)
       end
     end
+  end
+
+  def genes_to_JSON
+    genes_json_copy = Hash.new
+    @genes.each do |gene_action_type, sub_genes|
+      genes_json_copy["#{gene_action_type}"] = Array.new
+      sub_genes.each_with_index do |gene, index|
+        genes_json_copy["#{gene_action_type}"] << Hash.new
+        genes_json_copy["#{gene_action_type}"][index]["#{gene.class}"] = gene.codons
+      end
+    end
+    return genes_json_copy
   end
 
   def genes_to_string
