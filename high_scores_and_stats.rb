@@ -10,7 +10,7 @@ class High_Scores_and_Stats
   end
 
   def feed(scores, population)
-    @stats_per_gen_array << scores.descriptive_statistics
+    #@stats_per_gen_array << scores.descriptive_statistics
     # now check for high score entries
     scores.each_with_index do |score, index|
       # for each agent at index with some score, check if it is high enough
