@@ -1,7 +1,7 @@
 ##### Remember: Quick and Dirty this time...
 require 'json'
 #require 'descriptive_statistics'
-require 'mysql2'
+
 require_relative 'agent'
 require_relative 'high_scores_and_stats'
 require_relative 'record'
