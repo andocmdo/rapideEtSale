@@ -3,6 +3,7 @@ class Record
 
   def initialize(input_hash)
     @data = input_hash
+    @data["sma"] = Hash.new
   end
 
   def purchase_price
@@ -27,6 +28,36 @@ class Record
   def avgOHLC
     return (@data["open"] + @data["high"] + @data["low"] + @data["close"]) / 4
   end
+
+  def sma(interval)
+    if interval == 0
+      sma_for_interval = avgOHLC
+    elsif @data["sma"].key?(interval) # if it's already been computed
+      return @data["sma"][interval]   # return precomputed value
+    else
+      # calculate it
+      # if the reqested interval is too far behind our list of records
+      # then limit it to the maximum length from our current record index
+      index = $records.index(self)
+      if index < interval
+        limited_interval = index
+        sum = 0.0
+        (0..limited_interval).each do |i|
+          sum += $records[index - i].avgOHLC
+        end
+        @data["sma"][limited_interval] = sum / interval
+        return @data["sma"][limited_interval]
+      else
+        # here is the calculation part
+        sum = 0.0
+        (0..interval).each do |i|
+          sum += $records[index - i].avgOHLC
+        end
+        @data["sma"][interval] = sum / interval
+        return @data["sma"][interval]
+      end
+    end
+  end # end of sma method
 
 ### Static method for loading records
   def self.load_records(config) # I'd like to make this a specific hash only...
