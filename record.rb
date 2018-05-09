@@ -25,8 +25,9 @@ class Record
   # Can't decide if I'm going to put required methods in the this record class,
   # or add them dynamically in the gene classes (since they know what they need)
   # I guess some basic/general ones will be put here
+  # TODO why are we having to convert to float?? fix this
   def avgOHLC
-    return (@data["open"] + @data["high"] + @data["low"] + @data["close"]) / 4
+    return (@data["open"].to_f + @data["high"].to_f + @data["low"].to_f + @data["close"].to_f) / 4
   end
 
 ### Static method for loading records
