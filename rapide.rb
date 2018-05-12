@@ -14,7 +14,8 @@ if ARGV[0] != nil && ARGV[1] != nil
   config = JSON.parse(File.read(ARGV[0]))
   records_hash_array = JSON.parse(File.read(ARGV[1]))
 else
-  puts "Missing configuration argument. Need JSON string!"
+  puts "Usage: ruby rapide.rb [configFile.json] [dataFile.json]"
+  exit 
 end
 
 # load the records for the simulation
