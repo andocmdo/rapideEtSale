@@ -1,5 +1,6 @@
 ##### Remember: Quick and Dirty this time...
 require 'json'
+require 'date'
 #require 'descriptive_statistics'
 require_relative 'agent'
 require_relative 'high_scores_and_stats'
@@ -19,7 +20,7 @@ else
 end
 
 # Population must be created before loading records so that we can inject the
-# necessary methods from the gene classes into the Record class
+# necessary methods from the loaded gene classes into the Record class
 population_size = config["ga"]["populationSize"]
 population = Array.new
 (0...population_size).each do
@@ -30,6 +31,9 @@ end
 # TODO make this a singleton or something
 $records = Array.new
 records_hash_array.each do |record_hash|
+  # when loading the records, convert the date string to a ruby Date object for
+  # easy comparison later in the simultaion
+  record_hash["parsed_date"] = Date.parse(record_hash["date"])
   $records << Record.new(record_hash)
 end
 
