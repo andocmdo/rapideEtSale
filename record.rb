@@ -27,11 +27,11 @@ class Record
   # I guess some basic/general ones will be put here
   # TODO why are we having to convert to float?? fix this
   def avgOHLC
-    return (@data["open"].to_f + @data["high"].to_f + @data["low"].to_f + @data["close"].to_f) / 4
+    return (@data["open"] + @data["high"] + @data["low"] + @data["close"]) / 4
   end
 
-### Static method for loading records
-  def self.load_records(config) # I'd like to make this a specific hash only...
+  ### Static method for loading records from mysql
+  def self.load_records_mysql(config) # I'd like to make this a specific hash only...
     host = config["records"]["host"]
     username = config["records"]["username"]
     password = config["records"]["password"]
