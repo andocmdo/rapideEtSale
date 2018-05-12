@@ -1,12 +1,13 @@
 ###### Gene Classes ########
 class SmaPercent
   attr_accessor :codons
-  def initialize
+  def initialize(conf)
+    @conf = conf
     # these class variables are the individual codons/parts of the gene itself
     @codons = Hash.new
     @codons["percent"] = (rand * 2.0) - 1.0       # limit for activation. are we above the x% SMA(interval)?
     # TODO make this interval limit configurable
-    @codons["interval"] = rand(200) + 1 # interval to calculate the SMA, (such as SMA(200) is 200 day moving average)
+    @codons["interval"] = rand(@conf["agent"]["smaPercentIntervalMax"]) + 1 # interval to calculate the SMA, (such as SMA(200) is 200 day moving average)
     @codons["above"] = [true, false].sample  # true is above x%, false is below
     @codons["weight"] = rand        # weight to assign this gene
 
@@ -45,12 +46,12 @@ class SmaPercent
               end
               @data["sma"][interval] = sum / interval
               return @data["sma"][interval]
-            end
-          end
+            end # end index < interval check
+          end # end else to calculate if not already calculated
         end # end of sma method
-      end
-    end
-  end
+      end # end Record.class eval
+    end # end if Record.method_defined?
+  end # end initialize method
 
   def calc(record)
     # now since we know the record responds to the required methods, we calc the
@@ -58,7 +59,6 @@ class SmaPercent
     # right now it's either activated or not, (on/off), maybe in future we can
     # return adjusted values according to some activation function (sigmoid?)
     # for how close it is within it's desired bounds.
-
     current_percent_from_sma = (record.avgOHLC / record.sma(@codons["interval"])) - 1.0
     if @codons["above"]   # if we are checking for above
       if current_percent_from_sma > @codons["percent"]
@@ -77,7 +77,7 @@ class SmaPercent
       @codons["percent"] = (rand * 2.0) - 1.0
     end
     if rand < rate
-      @codons["interval"] = rand(200) + 1
+      @codons["interval"] = rand(@conf["agent"]["smaPercentIntervalMax"]) + 1
     end
     if rand < rate
       @codons["over_under"] = [true, false].sample
@@ -95,13 +95,15 @@ class SmaPercent
 end
 
 
-class PercentChangePos
+class PercentChange
   attr_accessor :codons
-  def initialize
+  def initialize(conf)
+    @conf = conf
     # these class variables are the individual codons/parts of the gene itself
     @codons = Hash.new
     @codons["percent"] = rand       # limit for activation. are we above the x% change (interval)?
-    @codons["interval"] = rand(200) + 1 # how long ago to calculate the percent change from
+    @codons["interval"] = rand(@conf["agent"]["percentChangeIntervalMax"]) + 1 # how long ago to calculate the percent change from
+    @codons["above"] = [true, false].sample  # true is above x%, false is below
     @codons["weight"] = rand        # weight to assign this gene
   end
 
@@ -114,7 +116,7 @@ class PercentChangePos
       @codons["percent"] = rand
     end
     if rand < rate
-      @codons["interval"] = rand(200) + 1
+      @codons["interval"] = rand(@conf["agent"]["percentChangeIntervalMax"]) + 1
     end
     if rand < rate
       @codons["weight"] = rand
@@ -131,10 +133,11 @@ end
 
 class TimeSinceLastBuy
   attr_accessor :codons
-  def initialize
+  def initialize(conf)
+    @conf = conf
     # these class variables are the individual codons/parts of the gene itself
     @codons = Hash.new
-    @codons["interval"] = rand(200) + 1 # time since last buy action
+    @codons["interval"] = rand(@conf["agent"]["timeSinceLastBuyIntervalMax"]) + 1 # time since last buy action
     @codons["weight"] = rand        # weight to assign this gene
   end
 
@@ -144,7 +147,7 @@ class TimeSinceLastBuy
 
   def mutate(rate)        # We mutate each gene component individually
     if rand < rate
-      @codons["interval"] = rand(200) + 1
+      @codons["interval"] = rand(@conf["agent"]["timeSinceLastBuyIntervalMax"]) + 1
     end
     if rand < rate
       @codons["weight"] = rand
@@ -161,16 +164,17 @@ end
 
 class TimeSinceLastSell
   attr_accessor :codons
-  def initialize
+  def initialize(conf)
+    @conf = conf
     # these class variables are the individual codons/parts of the gene itself
     @codons = Hash.new
-    @codons["interval"] = rand(200) + 1 # time since last sell action
+    @codons["interval"] = rand(@conf["agent"]["timeSinceLastSellIntervalMax"]) + 1 # time since last sell action
     @codons["weight"] = rand        # weight to assign this gene
   end
 
   def mutate(rate)        # We mutate each gene component individually
     if rand < rate
-      @codons["interval"] = rand(200) + 1
+      @codons["interval"] = rand(@conf["agent"]["timeSinceLastSellIntervalMax"]) + 1
     end
     if rand < rate
       @codons["weight"] = rand
@@ -190,7 +194,8 @@ end
 
 class BuySellSignalsWithinPercentDiff
   attr_accessor :codons
-  def initialize
+  def initialize(conf)
+    @conf = conf
     # these class variables are the individual codons/parts of the gene itself
     @codons = Hash.new
     @codons["percent"] = rand       # buy sell are within x% diff
@@ -220,7 +225,8 @@ end
 ### This random is to be used fo testing only
 class SingleRandom
   attr_accessor :codons
-  def initialize
+  def initialize(conf)
+    @conf = conf
     # only one random codon
     @codons = Hash.new
     @codons["weight"] = rand
