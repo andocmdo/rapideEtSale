@@ -68,14 +68,13 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
   puts "\nGeneration: #{generation}"    # TODO remove for debug
 
   # run agents through sim and calculate fitness
-  scores = Array.new
   population.each do |agent|
     agent.run_sim($records, sim_start_record_index, sim_end_record_index)    # run the agent through the simulation first
-    scores << agent.fitness   # then get the fitness
+    stats.feed(agent.fitness)   # then get the fitness, give to stats to check for high score
   end
   # feed that info to the stats tracker, who will then pull back out
   # the agents that have top scores
-  stats.feed(scores, population) # TODO might not be the most efficient way...
+  # stats.feed_population(scores, population) # TODO might not be the most efficient way...
   stats.print_high_scores
 
   # xover
