@@ -26,6 +26,8 @@ class SmaPercent
             # calculate it
             # if the reqested interval is too far behind our list of records
             # then limit it to the maximum length from our current record index
+            # TODO fix the use of global variable for records, because when we
+            # start to use threads this will break for sure...
             index = $records.index(self)
             if index < interval
               limited_interval = index

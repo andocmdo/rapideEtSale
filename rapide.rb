@@ -29,15 +29,28 @@ end
 
 # load the records for the simulation
 # TODO make this a singleton or something
+# also, set the limits for start and end dates for simulation
+start_date = Date.parse(config["records"]["startDate"])
+end_date = Date.parse(config["records"]["endDate"])
+sim_start_record_index = 0
+sim_end_record_index = 0
+start_found = false
+end_found = false
 $records = Array.new
-records_hash_array.each do |record_hash|
+records_hash_array.each_with_index do |record_hash, index|
   # when loading the records, convert the date string to a ruby Date object for
   # easy comparison later in the simultaion
   record_hash["parsed_date"] = Date.parse(record_hash["date"])
+  # remember the index for the start and end records
+  if !start_found && (record_hash["parsed_date"] >= start_date)
+    sim_start_record_index = index
+    start_found = true
+  elsif !end_found && (record_hash["parsed_date"] >= end_date)
+    sim_end_record_index = index
+    end_found = true
+  end
   $records << Record.new(record_hash)
 end
-
-
 
 # set the population parameters
 mutation_rate = config["ga"]["mutationRate"]
@@ -55,12 +68,12 @@ stats = High_Scores_and_Stats.new(config["ga"]["numberOfHighScores"])
   # run agents through sim and calculate fitness
   scores = Array.new
   population.each do |agent|
-    agent.run_sim($records)    # run the agent through the simulation first
+    agent.run_sim($records, sim_start_record_index, sim_end_record_index)    # run the agent through the simulation first
     scores << agent.fitness   # then get the fitness
   end
   # feed that info to the stats tracker, who will then pull back out
   # the agents that have top scores
-  stats.feed(scores, population)
+  stats.feed(scores, population) # TODO might not be the most efficient way...
   stats.print_high_scores
 
   # xover

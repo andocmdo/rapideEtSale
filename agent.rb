@@ -42,12 +42,13 @@ class Agent
     @shares = 0
   end # init end
 
-  def run_sim(records)
-    #TODO fix this, run the simulation.
-    records.each_with_index do |record, index|
-      step(record, index)
+  def run_sim(records, sim_start_index, sim_end_index)
+    # this limits the simulation start and end dates
+    for i in sim_start_index..sim_end_index do
+      step(records[i], i)
     end
-    @fitness = @total_value / @starting_cash    #TODO fix this to actually use the simulation score
+    #TODO fix this to account for baseline?
+    @fitness = @total_value / @starting_cash
   end
 
   def step(record, index)
