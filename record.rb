@@ -3,7 +3,6 @@ class Record
 
   def initialize(input_hash)
     @data = input_hash
-    @data["sma"] = Hash.new
   end
 
   def purchase_price
@@ -25,12 +24,13 @@ class Record
   # Can't decide if I'm going to put required methods in the this record class,
   # or add them dynamically in the gene classes (since they know what they need)
   # I guess some basic/general ones will be put here
+  # TODO why are we having to convert to float?? fix this
   def avgOHLC
     return (@data["open"] + @data["high"] + @data["low"] + @data["close"]) / 4
   end
 
-### Static method for loading records
-  def self.load_records(config) # I'd like to make this a specific hash only...
+  ### Static method for loading records from mysql
+  def self.load_records_mysql(config) # I'd like to make this a specific hash only...
     host = config["records"]["host"]
     username = config["records"]["username"]
     password = config["records"]["password"]

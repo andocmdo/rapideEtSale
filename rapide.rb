@@ -1,7 +1,6 @@
 ##### Remember: Quick and Dirty this time...
 require 'json'
 #require 'descriptive_statistics'
-require 'mysql2'
 require_relative 'agent'
 require_relative 'high_scores_and_stats'
 require_relative 'record'
@@ -11,22 +10,31 @@ require_relative 'gene_classes'
 
 ####################### Script runs below here ################
 # load configuration
-if ARGV[0] != nil && ARGV[0].start_with?("{")
-  config = JSON.parse(ARGV[0])
+if ARGV[0] != nil && ARGV[1] != nil
+  config = JSON.parse(File.read(ARGV[0]))
+  records_hash_array = JSON.parse(File.read(ARGV[1]))
 else
-  puts "Missing configuration argument. Need JSON string!"
+  puts "Usage: ruby rapide.rb [configFile.json] [dataFile.json]"
+  exit
 end
 
-# load the records for the simulation
-# TODO make this a singleton or something, this is trashy
-$records = Record.load_records(config)
-
-# create the population
+# Population must be created before loading records so that we can inject the
+# necessary methods from the gene classes into the Record class 
 population_size = config["ga"]["populationSize"]
 population = Array.new
 (0...population_size).each do
   population << Agent.new(config)
 end
+
+# load the records for the simulation
+# TODO make this a singleton or something, this is trashy
+#$records = Record.load_records(config)
+$records = Array.new
+records_hash_array.each do |record_hash|
+  $records << Record.new(record_hash)
+end
+
+
 
 # set the population parameters
 mutation_rate = config["ga"]["mutationRate"]

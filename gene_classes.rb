@@ -9,22 +9,15 @@ class SmaPercent
     @codons["interval"] = rand(200) + 1 # interval to calculate the SMA, (such as SMA(200) is 200 day moving average)
     @codons["above"] = [true, false].sample  # true is above x%, false is below
     @codons["weight"] = rand        # weight to assign this gene
-  end
 
-
-  # at first I was thinking that I could add methods needed for the calculations
-  # for each gene here dynamically, but now I'm thinking I will add it to the record
-  # class anyways...
-
-  def calc(record)
-    # now since we know the record responds to the required methods, we calc the
-    # activation for this gene
-    # right now it's either activated or not, (on/off), maybe in future we can
-    # return adjusted values according to some activation function (sigmoid?)
-    # for how close it is within it's desired bounds.
-    if !record.respond_to?("sma")
+    # Now check that the Record class contains the necessary methods for the
+    # proper operation of this gene class
+    if !Record.method_defined? :sma
       Record.class_eval do
         def sma(interval)
+          if !@data.key?("sma")
+            @data["sma"] = Hash.new
+          end
           if interval == 0
             sma_for_interval = avgOHLC
           elsif @data["sma"].key?(interval) # if it's already been computed
@@ -53,8 +46,16 @@ class SmaPercent
             end
           end
         end # end of sma method
-      end # end of Record.class_eval
-    end # end of method check
+      end
+    end
+  end
+
+  def calc(record)
+    # now since we know the record responds to the required methods, we calc the
+    # activation for this gene
+    # right now it's either activated or not, (on/off), maybe in future we can
+    # return adjusted values according to some activation function (sigmoid?)
+    # for how close it is within it's desired bounds.
 
     current_percent_from_sma = (record.avgOHLC / record.sma(@codons["interval"])) - 1.0
     if @codons["above"]   # if we are checking for above
@@ -215,7 +216,7 @@ class BuySellSignalsWithinPercentDiff
 end
 
 ### This random is to be used fo testing only
-class SingleRandomForTestingOnly
+class SingleRandom
   attr_accessor :codons
   def initialize
     # only one random codon
