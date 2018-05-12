@@ -19,7 +19,7 @@ else
 end
 
 # Population must be created before loading records so that we can inject the
-# necessary methods from the gene classes into the Record class 
+# necessary methods from the gene classes into the Record class
 population_size = config["ga"]["populationSize"]
 population = Array.new
 (0...population_size).each do
@@ -27,8 +27,7 @@ population = Array.new
 end
 
 # load the records for the simulation
-# TODO make this a singleton or something, this is trashy
-#$records = Record.load_records(config)
+# TODO make this a singleton or something
 $records = Array.new
 records_hash_array.each do |record_hash|
   $records << Record.new(record_hash)
