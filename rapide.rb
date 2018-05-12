@@ -15,7 +15,15 @@ if ARGV[0] != nil && ARGV[1] != nil
   records_hash_array = JSON.parse(File.read(ARGV[1]))
 else
   puts "Usage: ruby rapide.rb [configFile.json] [dataFile.json]"
-  exit 
+  exit
+end
+
+# Population must be created before loading records so that we can inject the
+# necessary methods from the gene classes into the Record class 
+population_size = config["ga"]["populationSize"]
+population = Array.new
+(0...population_size).each do
+  population << Agent.new(config)
 end
 
 # load the records for the simulation
@@ -26,12 +34,7 @@ records_hash_array.each do |record_hash|
   $records << Record.new(record_hash)
 end
 
-# create the population
-population_size = config["ga"]["populationSize"]
-population = Array.new
-(0...population_size).each do
-  population << Agent.new(config)
-end
+
 
 # set the population parameters
 mutation_rate = config["ga"]["mutationRate"]
