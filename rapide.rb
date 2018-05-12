@@ -45,11 +45,11 @@ records_hash_array.each_with_index do |record_hash, index|
   if !start_found && (record_hash["parsed_date"] >= start_date)
     sim_start_record_index = index
     start_found = true
-    puts "start index: #{sim_start_record_index}"
+    #puts "start index: #{sim_start_record_index}"
   elsif !end_found && (record_hash["parsed_date"] > end_date)
     sim_end_record_index = index - 1
     end_found = true
-    puts "start index: #{sim_end_record_index}"
+    #puts "start index: #{sim_end_record_index}"
   end
   $records << Record.new(record_hash)
 end

@@ -9,7 +9,13 @@ class High_Scores_and_Stats
     @stats_per_gen_array = Array.new    # array for each gen containing hash of descriptive statistics
   end
 
-  def feed(scores, population)
+  def feed(score)
+    if (score > @min_high_score) || (@high_score_agents.size < @num_high_scores)
+      add_high_score_agent(population[index])
+    end
+  end # feed end
+
+  def feed_population(scores, population)
     #@stats_per_gen_array << scores.descriptive_statistics
     # now check for high score entries
     scores.each_with_index do |score, index|
