@@ -17,13 +17,13 @@ class Agent
 
     # Now load in the appropriate files/classes for genome
     conf["agent"]["buyGenes"].each do |gene_class|
-      @genes["buy"] << Object.const_get(gene_class).new
+      @genes["buy"] << Object.const_get(gene_class).new(conf)
     end
     conf["agent"]["sellGenes"].each do |gene_class|
-      @genes["sell"] << Object.const_get(gene_class).new
+      @genes["sell"] << Object.const_get(gene_class).new(conf)
     end
     conf["agent"]["holdGenes"].each do |gene_class|
-      @genes["hold"] << Object.const_get(gene_class).new
+      @genes["hold"] << Object.const_get(gene_class).new(conf)
     end
 
     # TODO I need to put all these variables in a hash for easy printing....
