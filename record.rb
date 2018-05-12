@@ -3,7 +3,6 @@ class Record
 
   def initialize(input_hash)
     @data = input_hash
-    @data["sma"] = Hash.new
   end
 
   def purchase_price

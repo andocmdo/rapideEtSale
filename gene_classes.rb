@@ -24,6 +24,7 @@ class SmaPercent
     # for how close it is within it's desired bounds.
     if !record.respond_to?("sma")
       Record.class_eval do
+        @data["sma"] = Hash.new
         def sma(interval)
           if interval == 0
             sma_for_interval = avgOHLC
