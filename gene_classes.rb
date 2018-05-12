@@ -215,7 +215,7 @@ class BuySellSignalsWithinPercentDiff
 end
 
 ### This random is to be used fo testing only
-class SingleRandomForTestingOnly
+class SingleRandom
   attr_accessor :codons
   def initialize
     # only one random codon
