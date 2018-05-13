@@ -9,9 +9,9 @@ class High_Scores_and_Stats
     @stats_per_gen_array = Array.new    # array for each gen containing hash of descriptive statistics
   end
 
-  def feed(score)
-    if (score > @min_high_score) || (@high_score_agents.size < @num_high_scores)
-      add_high_score_agent(population[index])
+  def feed(agent)
+    if (agent.fitness > @min_high_score) || (@high_score_agents.size < @num_high_scores)
+      add_high_score_agent(agent)
     end
   end # feed end
 
