@@ -86,12 +86,6 @@ class SmaPercent
       @codons["weight"] = rand
     end
   end
-
-  def to_string
-    @codons.each do |codon_key, codon_val|
-      "#{codon_key}: #{codon_val}"
-    end
-  end
 end
 
 
@@ -122,12 +116,6 @@ class PercentChange
       @codons["weight"] = rand
     end
   end
-
-  def to_string
-    @codons.each do |codon_key, codon_val|
-      "#{codon_key}: #{codon_val}"
-    end
-  end
 end
 
 
@@ -151,12 +139,6 @@ class TimeSinceLastBuy
     end
     if rand < rate
       @codons["weight"] = rand
-    end
-  end
-
-  def to_string
-    @codons.each do |codon_key, codon_val|
-      "#{codon_key}: #{codon_val}"
     end
   end
 end
@@ -184,13 +166,8 @@ class TimeSinceLastSell
   def calc(record)
 
   end
-
-  def to_string
-    @codons.each do |codon_key, codon_val|
-      "#{codon_key}: #{codon_val}"
-    end
-  end
 end
+
 
 class BuySellSignalsWithinPercentDiff
   attr_accessor :codons
@@ -214,13 +191,8 @@ class BuySellSignalsWithinPercentDiff
       @codons["weight"] = rand
     end
   end
-
-  def to_string
-    @codons.each do |codon_key, codon_val|
-      "#{codon_key}: #{codon_val}"
-    end
-  end
 end
+
 
 ### This random is to be used fo testing only
 class SingleRandom
@@ -241,11 +213,5 @@ class SingleRandom
 
   def mutate(rate)
     # no need to mutate since it returns random
-  end
-
-  def to_string
-    @codons.each do |codon_key, codon_val|
-      "#{codon_key}: #{codon_val}"
-    end
   end
 end
