@@ -1,0 +1,47 @@
+{
+  "system": {
+    "debug": false,
+    "printFinalStats": false
+  },
+  "ga": {
+    "populationSize": 150,
+    "mutationRate": 0.05,
+    "xoverPoolSizeRatio": 2,
+    "maxGenerations": 30,
+    "numberOfHighScores": 5
+  },
+  "records": {
+    "host": "cajetan.andocmdo.com",
+    "username": "gastock",
+    "password": "hotdogwindow14",
+    "database": "gastock",
+    "table": "marketvolume_price_data_v1",
+    "symbol": "RSYS",
+    "ldateFrom": 158306,
+    "ldateTo": 158737
+  },
+  "agent": {
+    "startingCash": 10000,
+    "settleCashInterval": 2,
+    "tradeCost": 4.95,
+    "buyGenes": [
+      "SmaPercentAbove",
+      "PercentChangePos",
+      "TimeSinceLastBuy",
+      "TimeSinceLastSell"
+    ],
+    "sellGenes": [
+      "SmaPercentAbove",
+      "PercentChangePos",
+      "TimeSinceLastBuy",
+      "TimeSinceLastSell"
+    ],
+    "holdGenes": [
+      "SmaPercentAbove",
+      "PercentChangePos",
+      "TimeSinceLastBuy",
+      "TimeSinceLastSell",
+      "BuySellSignalsWithinPercentDiff"
+    ]
+  }
+}
